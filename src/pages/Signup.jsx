@@ -37,8 +37,7 @@ const Signup = () => {
     formDataToSend.append("username", formData.username.toLowerCase()); // Lowercase username
 
     try {
-      console.log("API Base URL:", import.meta.env.VITE_API_BASE_URL);
-      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/v1/users/register`.replace(/([^:]\/)\/+/g, "$1"), formDataToSend, {
+      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/v1/users/register`, formDataToSend, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       navigate("/login"); // Redirect to login page on success

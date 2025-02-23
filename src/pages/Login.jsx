@@ -28,7 +28,7 @@ const Login = () => {
       console.log("Login Successful:", res.data);
 
       // Redirect to home page after successful login
-      navigate("/Home");
+      navigate("/");
     } catch (error) {
       console.error("Login Error:", error.response?.data?.message || error.message);
       setError("Invalid credentials. Please try again.");

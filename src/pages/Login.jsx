@@ -25,8 +25,6 @@ const Login = () => {
         formData,
         { withCredentials: true } // Ensures cookies are sent and received properly
       );
-      console.log("Login Successful:", res.data);
-
       // Redirect to home page after successful login
       navigate("/");
     } catch (error) {

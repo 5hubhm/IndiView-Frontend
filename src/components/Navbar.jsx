@@ -14,20 +14,17 @@ const Navbar = () => {
             try {
                 const res = await axios.get(
                     `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/current-user`,
-                    { withCredentials: true }
+                    { withCredentials: true } // Ensures JWT is sent
                 );
 
                 if (res.data?.data) {
                     setUser(res.data.data);
-                    localStorage.setItem("user", JSON.stringify(res.data.data));
                 } else {
                     setUser(null);
-                    localStorage.removeItem("user");
                 }
             } catch (error) {
                 console.error("Error fetching user:", error.response?.data || error.message);
                 setUser(null);
-                localStorage.removeItem("user");
             }
         };
 
@@ -42,7 +39,6 @@ const Navbar = () => {
                 { withCredentials: true }
             );
             setUser(null);
-            localStorage.removeItem("user");
             navigate("/");
         } catch (error) {
             console.error("Logout Error:", error.response?.data?.message || error.message);
@@ -74,7 +70,6 @@ const Navbar = () => {
                 />
             </div>
 
-            {/* User Profile Section */}
             {/* User Profile Section */}
             <div className="relative" ref={menuRef}>
                 {user ? (
@@ -116,8 +111,6 @@ const Navbar = () => {
                     </div>
                 )}
             </div>
-
-
         </header>
     );
 };

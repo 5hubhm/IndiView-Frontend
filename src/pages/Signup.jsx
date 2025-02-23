@@ -9,6 +9,7 @@ const Signup = () => {
     username: "",
     email: "",
     avatar: null,
+    avatarPreview: "",
     avatarName: "",
     coverImage: null,
     coverImageName: "",
@@ -23,11 +24,19 @@ const Signup = () => {
   const handleFileChange = (e) => {
     const { name, files } = e.target;
     if (files.length > 0) {
-      setFormData({
-        ...formData,
-        [name]: files[0],
-        [`${name}Name`]: files[0].name,
-      });
+      const file = files[0];
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setFormData({
+          ...formData,
+          [name]: file,
+          [`${name}Name`]: file.name,
+          ...(name === "avatar" && { avatarPreview: reader.result }),
+        });
+      };
+
+      reader.readAsDataURL(file);
     }
   };
 
@@ -89,22 +98,24 @@ const Signup = () => {
           className="w-full p-2 bg-gray-800 rounded text-white"
         />
 
-        {/* Avatar Input */}
-        <label className="block">
-          <span className="text-gray-300">Avatar</span>
-          <input
-            type="file"
-            name="avatar"
-            accept="image/*"
-            onChange={handleFileChange}
-            required
-            className="w-full p-2 bg-gray-800 rounded text-white hidden"
-            id="avatar-upload"
-          />
-          <label htmlFor="avatar-upload" className="block cursor-pointer bg-gray-700 p-2 rounded text-center">
-            {formData.avatarName || "Choose File"}
+        {/* Avatar Input*/}
+        <div className="flex flex-col items-center space-y-2">
+          <label className="w-full">
+            <span className="text-gray-300">Avatar</span>
+            <input
+              type="file"
+              name="avatar"
+              accept="image/*"
+              onChange={handleFileChange}
+              required
+              className="hidden"
+              id="avatar-upload"
+            />
+            <label htmlFor="avatar-upload" className="block cursor-pointer bg-gray-700 p-2 rounded text-center">
+              {formData.avatarName || "Choose Avatar"}
+            </label>
           </label>
-        </label>
+        </div>
 
         {/* Cover Image Input */}
         <label className="block">
@@ -114,11 +125,11 @@ const Signup = () => {
             name="coverImage"
             accept="image/*"
             onChange={handleFileChange}
-            className="w-full p-2 bg-gray-800 rounded text-white hidden"
+            className="hidden"
             id="cover-upload"
           />
           <label htmlFor="cover-upload" className="block cursor-pointer bg-gray-700 p-2 rounded text-center">
-            {formData.coverImageName || "Choose File"}
+            {formData.coverImageName || "Choose Cover Image"}
           </label>
         </label>
 

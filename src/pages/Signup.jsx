@@ -7,7 +7,9 @@ const Signup = () => {
   const [formData, setFormData] = useState({
     fullName: "",
     avatar: null,
+    avatarName: "", // New state to store file name
     coverImage: null,
+    coverImageName: "", // New state to store file name
     email: "",
     password: "",
     username: "",
@@ -20,7 +22,13 @@ const Signup = () => {
 
   const handleFileChange = (e) => {
     const { name, files } = e.target;
-    setFormData({ ...formData, [name]: files[0] });
+    if (files.length > 0) {
+      setFormData({
+        ...formData,
+        [name]: files[0], 
+        [`${name}Name`]: files[0].name, // Store file name in state
+      });
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -34,13 +42,13 @@ const Signup = () => {
     }
     formDataToSend.append("email", formData.email);
     formDataToSend.append("password", formData.password);
-    formDataToSend.append("username", formData.username.toLowerCase()); // Lowercase username
+    formDataToSend.append("username", formData.username.toLowerCase());
 
     try {
       await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/v1/users/register`, formDataToSend, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      navigate("/login"); // Redirect to login page on success
+      navigate("/login"); 
     } catch (error) {
       console.error("Signup failed:", error.response?.data || error.message);
     }
@@ -61,22 +69,38 @@ const Signup = () => {
           className="w-full p-2 bg-gray-800 rounded text-white"
         />
 
-        <input
-          type="file"
-          name="avatar"
-          accept="image/*"
-          onChange={handleFileChange}
-          required
-          className="w-full p-2 bg-gray-800 rounded text-white"
-        />
+        {/* Avatar Input with Displayed Filename */}
+        <label className="block">
+          <span className="text-gray-300">Avatar</span>
+          <input
+            type="file"
+            name="avatar"
+            accept="image/*"
+            onChange={handleFileChange}
+            required
+            className="w-full p-2 bg-gray-800 rounded text-white hidden"
+            id="avatar-upload"
+          />
+          <label htmlFor="avatar-upload" className="block cursor-pointer bg-gray-700 p-2 rounded text-center">
+            {formData.avatarName || "Choose File"}
+          </label>
+        </label>
 
-        <input
-          type="file"
-          name="coverImage"
-          accept="image/*"
-          onChange={handleFileChange}
-          className="w-full p-2 bg-gray-800 rounded text-white"
-        />
+        {/* Cover Image Input with Displayed Filename */}
+        <label className="block">
+          <span className="text-gray-300">Cover Image</span>
+          <input
+            type="file"
+            name="coverImage"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="w-full p-2 bg-gray-800 rounded text-white hidden"
+            id="cover-upload"
+          />
+          <label htmlFor="cover-upload" className="block cursor-pointer bg-gray-700 p-2 rounded text-center">
+            {formData.coverImageName || "Choose File"}
+          </label>
+        </label>
 
         <input
           type="email"

@@ -75,6 +75,7 @@ const Navbar = () => {
             </div>
 
             {/* User Profile Section */}
+            {/* User Profile Section */}
             <div className="relative" ref={menuRef}>
                 {user ? (
                     <div className="flex items-center space-x-4">
@@ -115,6 +116,7 @@ const Navbar = () => {
                     </div>
                 )}
             </div>
+
 
         </header>
     );

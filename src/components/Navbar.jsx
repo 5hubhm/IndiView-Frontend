@@ -92,9 +92,10 @@ const Navbar = () => {
                                     <p className="text-sm text-gray-400">{user.email}</p>
                                 </div>
                                 <hr className="border-gray-700" />
-                                <Link to="/profile" className="block w-full text-left px-4 py-2 hover:bg-gray-800 transition">
+                                <Link to={`/c/${user.username}`} className="block w-full text-left px-4 py-2 hover:bg-gray-800 transition">
                                     Profile
                                 </Link>
+
                                 <button
                                     onClick={handleLogout}
                                     className="block w-full text-left px-4 py-2 text-red-400 hover:bg-gray-800 transition"

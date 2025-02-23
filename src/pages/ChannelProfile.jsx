@@ -32,40 +32,29 @@ const ChannelProfile = () => {
 
   return (
     <div className="flex flex-col h-screen bg-black text-white">
-      {/* Navbar */}
-      <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      {/* Profile Content */}
+      {/* Cover Image */}
+      <div className="relative">
+        <img
+          src={channel.coverImage || "/default-cover.jpg"}
+          alt="Cover"
+          className="w-full h-60 object-cover rounded-lg"
+        />
+        <div className="absolute -bottom-10 left-4">
+          <img
+            src={channel.avatar || "/default-avatar.jpg"}
+            alt="Avatar"
+            className="w-20 h-20 object-cover rounded-full border-4 border-white shadow-lg"
+          />
+        </div>
 
-      {/* Main Layout (Sidebar + Profile Content) */}
-      <div className="flex flex-1">
-        {/* Sidebar */}
-        <Sidebar />
-
-        {/* Profile Content */}
-        <div className="flex-1 max-w-4xl mx-auto mt-8 p-4">
-          {/* Cover Image */}
-          <div className="relative">
-            <img
-              src={channel.coverImage || "/default-cover.jpg"}
-              alt="Cover"
-              className="w-full h-60 object-cover rounded-lg"
-            />
-            <div className="absolute -bottom-10 left-4">
-              <img
-                src={channel.avatar || "/default-avatar.jpg"}
-                alt="Avatar"
-                className="w-20 h-20 object-cover rounded-full border-4 border-white shadow-lg"
-              />
-            </div>
-          </div>
-
-          {/* Channel Info */}
-          <div className="mt-14 text-center">
-            <h1 className="text-2xl font-bold">{channel.fullName}</h1>
-            <p className="text-gray-400">@{channel.username}</p>
-            <div className="mt-2 flex justify-center space-x-6 text-gray-400">
-              <span>{channel.subscribersCount} Subscribers</span>
-              <span>{channel.channelsSubscribedToCount} Subscribed</span>
-            </div>
+        {/* Channel Info */}
+        <div className="mt-14 text-center">
+          <h1 className="text-2xl font-bold">{channel.fullName}</h1>
+          <p className="text-gray-400">@{channel.username}</p>
+          <div className="mt-2 flex justify-center space-x-6 text-gray-400">
+            <span>{channel.subscribersCount} Subscribers</span>
+            <span>{channel.channelsSubscribedToCount} Subscribed</span>
           </div>
         </div>
       </div>

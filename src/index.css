@@ -1,6 +1,40 @@
 @import "tailwindcss";
-html, body {
-    height: 100%;
-    background-color: black;
+
+/* ====== Global Reset ====== */
+* {
+    box-sizing: border-box;
   }
+  
+  /* ====== Dark Mode Styling ====== */
+  html, body {
+    background-color: #000;  /* Full black background */
+    color: #fff;             /* White text */
+    font-family: 'Inter', sans-serif;
+    height: 100vh;           /* Ensures full page height */
+    overflow-x: hidden;      /* Prevents horizontal scrolling */
+  }
+  
+  /* ====== Smooth Scroll ====== */
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  /* ====== Custom Scrollbar (Optional) ====== */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #111;  /* Dark background */
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #444;  /* Medium dark */
+    border-radius: 4px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #666;  /* Slightly lighter on hover */
+  }
+ 
   

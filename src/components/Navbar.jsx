@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../utils/api";
 import logo from "../assets/logo.jpg";
 
 const Navbar = () => {
@@ -12,7 +12,7 @@ const Navbar = () => {
     useEffect(() => {
         const fetchUser = async () => {
             try {
-                const res = await axios.get(
+                const res = await api.get(
                     `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/current-user`,
                     { withCredentials: true } // Ensures JWT is sent
                 );
@@ -33,7 +33,7 @@ const Navbar = () => {
 
     const handleLogout = async () => {
         try {
-            await axios.post(
+            await api.post(
                 `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/logout`,
                 {},
                 { withCredentials: true }

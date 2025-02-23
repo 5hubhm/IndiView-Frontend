@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../utils/api";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -54,7 +54,7 @@ const Signup = () => {
     }
 
     try {
-      await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/v1/users/register`, formDataToSend, {
+      await api.post(`${import.meta.env.VITE_API_BASE_URL}/api/v1/users/register`, formDataToSend, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       navigate("/login");

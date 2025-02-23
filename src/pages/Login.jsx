@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom"; // Import useNavigate for redirection
-import axios from "axios";
+import api from "../utils/api";
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -20,7 +20,7 @@ const Login = () => {
     setError(""); // Reset error before new request
 
     try {
-      const res = await axios.post(
+      const res = await api.post(
         `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/login`,
         formData,
         { withCredentials: true } // Ensures cookies are sent and received properly

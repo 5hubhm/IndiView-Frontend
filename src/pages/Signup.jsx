@@ -6,13 +6,13 @@ const Signup = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     fullName: "",
-    avatar: null,
-    avatarName: "", // New state to store file name
-    coverImage: null,
-    coverImageName: "", // New state to store file name
-    email: "",
-    password: "",
     username: "",
+    email: "",
+    avatar: null,
+    avatarName: "",
+    coverImage: null,
+    coverImageName: "",
+    password: "",
   });
 
   const handleChange = (e) => {
@@ -25,8 +25,8 @@ const Signup = () => {
     if (files.length > 0) {
       setFormData({
         ...formData,
-        [name]: files[0], 
-        [`${name}Name`]: files[0].name, // Store file name in state
+        [name]: files[0],
+        [`${name}Name`]: files[0].name,
       });
     }
   };
@@ -36,19 +36,19 @@ const Signup = () => {
 
     const formDataToSend = new FormData();
     formDataToSend.append("fullName", formData.fullName);
+    formDataToSend.append("username", formData.username.toLowerCase());
+    formDataToSend.append("email", formData.email);
+    formDataToSend.append("password", formData.password);
     formDataToSend.append("avatar", formData.avatar);
     if (formData.coverImage) {
       formDataToSend.append("coverImage", formData.coverImage);
     }
-    formDataToSend.append("email", formData.email);
-    formDataToSend.append("password", formData.password);
-    formDataToSend.append("username", formData.username.toLowerCase());
 
     try {
       await axios.post(`${import.meta.env.VITE_API_BASE_URL}/api/v1/users/register`, formDataToSend, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      navigate("/login"); 
+      navigate("/login");
     } catch (error) {
       console.error("Signup failed:", error.response?.data || error.message);
     }
@@ -69,7 +69,27 @@ const Signup = () => {
           className="w-full p-2 bg-gray-800 rounded text-white"
         />
 
-        {/* Avatar Input with Displayed Filename */}
+        <input
+          type="text"
+          name="username"
+          placeholder="Username"
+          value={formData.username}
+          onChange={handleChange}
+          required
+          className="w-full p-2 bg-gray-800 rounded text-white"
+        />
+
+        <input
+          type="email"
+          name="email"
+          placeholder="Email"
+          value={formData.email}
+          onChange={handleChange}
+          required
+          className="w-full p-2 bg-gray-800 rounded text-white"
+        />
+
+        {/* Avatar Input */}
         <label className="block">
           <span className="text-gray-300">Avatar</span>
           <input
@@ -86,7 +106,7 @@ const Signup = () => {
           </label>
         </label>
 
-        {/* Cover Image Input with Displayed Filename */}
+        {/* Cover Image Input */}
         <label className="block">
           <span className="text-gray-300">Cover Image</span>
           <input
@@ -103,30 +123,10 @@ const Signup = () => {
         </label>
 
         <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-          className="w-full p-2 bg-gray-800 rounded text-white"
-        />
-
-        <input
           type="password"
           name="password"
           placeholder="Password"
           value={formData.password}
-          onChange={handleChange}
-          required
-          className="w-full p-2 bg-gray-800 rounded text-white"
-        />
-
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={formData.username}
           onChange={handleChange}
           required
           className="w-full p-2 bg-gray-800 rounded text-white"

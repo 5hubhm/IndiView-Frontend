@@ -14,7 +14,7 @@ const Home = () => {
       <div className="flex flex-1">
         <Sidebar />
         <main className="flex-1 flex flex-col items-center justify-center">
-          <h2 className="text-lg font-semibold">Welcome to IndView</h2>
+          <h2 className="text-lg font-semibold">Welcome to IndiView</h2>
           <p className="text-gray-400">Explore videos and more.</p>
         </main>
       </div>

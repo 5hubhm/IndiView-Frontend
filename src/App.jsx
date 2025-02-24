@@ -4,7 +4,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ChannelProfile from "./pages/ChannelProfile";
-import DashboardLayout from "./pages/DashBoardLayout";
+import DashboardLayout from "./pages/DashboardLayout";
 
 function App() {
   return (

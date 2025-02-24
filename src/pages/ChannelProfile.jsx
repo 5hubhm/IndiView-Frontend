@@ -1,22 +1,18 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { getUserChannelProfile } from "../api/user";
-import Navbar from "../components/Navbar";
-import Sidebar from "../components/Sidebar";
 
 const ChannelProfile = () => {
   const { username } = useParams(); // Get username from URL
   const [channel, setChannel] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const fetchChannel = async () => {
       try {
         const data = await getUserChannelProfile(username);
         setChannel(data.data); // Backend returns data inside `.data`
-        setIsLoggedIn(true); // Assuming user is logged in when data is fetched successfully
       } catch (err) {
         setError(err.message || "Failed to load channel");
       } finally {
@@ -31,32 +27,38 @@ const ChannelProfile = () => {
   if (error) return <p className="text-center text-red-500">{error}</p>;
 
   return (
-    <div className="flex flex-col h-screen bg-black text-white">
-      {/* Profile Content */}
+    <div className="flex flex-col min-h-screen bg-black text-white">
       {/* Cover Image */}
       <div className="relative">
         <img
           src={channel.coverImage || "/default-cover.jpg"}
           alt="Cover"
-          className="w-full h-60 object-cover rounded-lg"
+          className="w-full h-52 object-cover"
         />
-        <div className="absolute -bottom-10 left-4">
+        <div className="absolute -bottom-12 left-6">
           <img
             src={channel.avatar || "/default-avatar.jpg"}
             alt="Avatar"
-            className="w-20 h-20 object-cover rounded-full border-4 border-white shadow-lg"
+            className="w-24 h-24 object-cover rounded-full border-4 border-black shadow-lg"
           />
         </div>
+      </div>
 
-        {/* Channel Info */}
-        <div className="mt-14 text-center">
+      {/* Channel Info */}
+      <div className="mt-14 px-6 flex justify-between items-center">
+        <div>
           <h1 className="text-2xl font-bold">{channel.fullName}</h1>
           <p className="text-gray-400">@{channel.username}</p>
-          <div className="mt-2 flex justify-center space-x-6 text-gray-400">
-            <span>{channel.subscribersCount} Subscribers</span>
-            <span>{channel.channelsSubscribedToCount} Subscribed</span>
-          </div>
+          <p className="text-gray-400">
+            {channel.subscribersCount} Subscribers • {channel.channelsSubscribedToCount} Subscribed
+          </p>
         </div>
+
+        {/* Subscribe Button */}
+        <button className="bg-purple-500 px-5 py-2 rounded-md text-white flex items-center space-x-2">
+          <span>👤</span>
+          <span>Subscribe</span>
+        </button>
       </div>
     </div>
   );

@@ -71,7 +71,7 @@ const Navbar = () => {
             </div>
 
             {/* User Profile Section */}
-            <div className="relative z-50" ref={menuRef}>
+            <div className="relative z-50 overflow-visible" ref={menuRef}>
                 {user ? (
                     <div className="flex items-center space-x-4">
                         {/* Profile Button */}
@@ -89,10 +89,12 @@ const Navbar = () => {
 
                         {/* Dropdown Menu */}
                         {menuOpen && (
-                            <div className="absolute right-0 top-full mt-2 w-48 bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-50">
+                            <div className="absolute right-0 top-full mt-2 min-w-max bg-gray-900 border border-gray-700 rounded-lg shadow-lg z-50">
                                 <div className="p-3 text-center">
                                     <p className="font-semibold">{user.username}</p>
-                                    <p className="text-sm text-gray-400">{user.email}</p>
+                                    <p className="text-sm text-gray-400 truncate max-w-[180px] mx-auto">
+                                        {user.email}
+                                    </p>
                                 </div>
                                 <hr className="border-gray-700" />
                                 <Link
@@ -123,6 +125,7 @@ const Navbar = () => {
                     </div>
                 )}
             </div>
+
         </header>
     );
 };

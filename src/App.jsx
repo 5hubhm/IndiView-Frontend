@@ -5,6 +5,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import ChannelProfile from "./pages/ChannelProfile";
 import DashboardLayout from "./pages/DashboardLayout";
+import Support from "./pages/Support";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route element={<DashboardLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/c/:username" element={<ChannelProfile />} />
+          <Route path="/Support" element={<Support />} />
         </Route>
       </Routes>
     </Router>

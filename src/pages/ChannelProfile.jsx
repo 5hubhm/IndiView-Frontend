@@ -53,12 +53,6 @@ const ChannelProfile = () => {
             {channel.subscribersCount} Subscribers • {channel.channelsSubscribedToCount} Subscribed
           </p>
         </div>
-
-        {/* Subscribe Button */}
-        <button className="bg-purple-500 px-5 py-2 rounded-md text-white flex items-center space-x-2">
-          <span>👤</span>
-          <span>Subscribe</span>
-        </button>
       </div>
     </div>
   );

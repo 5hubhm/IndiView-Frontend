@@ -14,7 +14,7 @@ const Navbar = () => {
             try {
                 const res = await api.get(
                     `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/current-user`,
-                    { withCredentials: true } // Ensures JWT is sent
+                    { withCredentials: true }
                 );
 
                 if (res.data?.data) {
@@ -57,7 +57,7 @@ const Navbar = () => {
     }, []);
 
     return (
-        <header className="flex justify-between items-center px-6 py-3 bg-black border-b border-gray-700">
+        <header className="flex justify-between items-center px-6 py-3 bg-black border-b border-gray-700 relative">
             {/* Logo and Search Bar */}
             <div className="flex items-center space-x-3">
                 <Link to="/">
@@ -71,11 +71,14 @@ const Navbar = () => {
             </div>
 
             {/* User Profile Section */}
-            <div className="relative" ref={menuRef}>
+            <div className="relative z-50" ref={menuRef}>
                 {user ? (
                     <div className="flex items-center space-x-4">
                         {/* Profile Button */}
-                        <button onClick={() => setMenuOpen(!menuOpen)} className="text-white flex items-center space-x-2">
+                        <button
+                            onClick={() => setMenuOpen(!menuOpen)}
+                            className="text-white flex items-center space-x-2"
+                        >
                             <span className="font-semibold">{user.username}</span>
                             <img
                                 src={user.avatar}
@@ -95,11 +98,10 @@ const Navbar = () => {
                                 <Link
                                     to={`/c/${user.username}`}
                                     className="block w-full text-left px-4 py-2 hover:bg-gray-800 transition"
-                                    onClick={() => setMenuOpen(false)} // Close dropdown on click
+                                    onClick={() => setMenuOpen(false)}
                                 >
                                     Profile
                                 </Link>
-
 
                                 <button
                                     onClick={handleLogout}
@@ -112,8 +114,12 @@ const Navbar = () => {
                     </div>
                 ) : (
                     <div className="flex items-center space-x-4">
-                        <Link to="/login" className="text-gray-400 hover:text-white">Log in</Link>
-                        <Link to="/signup" className="bg-purple-500 px-4 py-2 rounded text-white">Sign up</Link>
+                        <Link to="/login" className="text-gray-400 hover:text-white">
+                            Log in
+                        </Link>
+                        <Link to="/signup" className="bg-purple-500 px-4 py-2 rounded text-white">
+                            Sign up
+                        </Link>
                     </div>
                 )}
             </div>

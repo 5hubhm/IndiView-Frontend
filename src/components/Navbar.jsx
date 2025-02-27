@@ -14,7 +14,7 @@ const Navbar = () => {
             try {
                 const res = await api.get(
                     `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/current-user`,
-                    { withCredentials: true }
+                    { withCredentials: true } // ✅ Ensures JWT authentication
                 );
 
                 if (res.data?.data) {
@@ -36,10 +36,10 @@ const Navbar = () => {
             await api.post(
                 `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/logout`,
                 {},
-                { withCredentials: true }
+                { withCredentials: true } // ✅ Clears JWT session on logout
             );
             setUser(null);
-            navigate("/");
+            navigate("/"); // ✅ Redirects after logout
         } catch (error) {
             console.error("Logout Error:", error.response?.data?.message || error.message);
         }
@@ -125,7 +125,6 @@ const Navbar = () => {
                     </div>
                 )}
             </div>
-
         </header>
     );
 };

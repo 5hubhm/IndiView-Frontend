@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getUserChannelProfile } from "../api/user";
+import api from "../utils/api"; // Import the Axios instance
 
 const ChannelProfile = () => {
   const { username } = useParams(); // Get username from URL
@@ -11,9 +11,13 @@ const ChannelProfile = () => {
   useEffect(() => {
     const fetchChannel = async () => {
       try {
-        const data = await getUserChannelProfile(username);
-        setChannel(data.data); // Backend returns data inside `.data`
+        const response = await api.get(
+          `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/c/${username}`
+        );
+        console.log("Fetched Channel Data:", response.data); // Debugging API response
+        setChannel(response.data?.data || {}); // Ensure channel data is correctly set
       } catch (err) {
+        console.error("Error fetching channel profile:", err);
         setError(err.message || "Failed to load channel");
       } finally {
         setLoading(false);
@@ -34,12 +38,14 @@ const ChannelProfile = () => {
           src={channel.coverImage || "/default-cover.jpg"}
           alt="Cover"
           className="w-full h-52 object-cover"
+          onError={(e) => (e.target.src = "/default-cover.jpg")} // Fallback if image fails
         />
         <div className="absolute -bottom-12 left-6">
           <img
             src={channel.avatar || "/default-avatar.jpg"}
             alt="Avatar"
             className="w-24 h-24 object-cover rounded-full border-4 border-black shadow-lg"
+            onError={(e) => (e.target.src = "/default-avatar.jpg")} // Fallback if image fails
           />
         </div>
       </div>
@@ -47,10 +53,13 @@ const ChannelProfile = () => {
       {/* Channel Info */}
       <div className="mt-14 px-6 flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold">{channel.fullName}</h1>
-          <p className="text-gray-400">@{channel.username}</p>
+          <h1 className="text-2xl font-bold">
+            {channel.fullName || "Unknown User"}
+          </h1>
+          <p className="text-gray-400">@{channel.username || "N/A"}</p>
           <p className="text-gray-400">
-            {channel.subscribersCount} Subscribers • {channel.channelsSubscribedToCount} Subscribed
+            {channel.subscribersCount || 0} Subscribers •{" "}
+            {channel.channelsSubscribedToCount || 0} Subscribed
           </p>
         </div>
       </div>

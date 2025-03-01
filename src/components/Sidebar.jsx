@@ -14,6 +14,7 @@ const Sidebar = () => {
         const response = await api.get("/api/v1/users/current-user", {
           withCredentials: true,
         });
+
         if (response.data) {
           setIsAuthenticated(true);
         }
@@ -36,7 +37,7 @@ const Sidebar = () => {
     { icon: <FiFolder />, text: "My Content", path: "/mycontent", protected: true },
     { icon: <FiFolder />, text: "Collections", path: "/collections", protected: true },
     { icon: <FiUsers />, text: "Subscription", path: "/subscription", protected: true },
-    { icon: <FiHelpCircle />, text: "Support", path: "/support", protected: true},
+    { icon: <FiHelpCircle />, text: "Support", path: "/support" },
     { icon: <FiSettings />, text: "Settings", path: "/settings", protected: true },
   ];
 
@@ -50,7 +51,7 @@ const Sidebar = () => {
             text={item.text}
             path={item.path}
             isActive={location.pathname === item.path}
-            isProtected={item.protected || false} // If protected, handle login check
+            isProtected={item.protected || false}
             isAuthenticated={isAuthenticated}
             navigate={navigate}
           />
@@ -63,7 +64,7 @@ const Sidebar = () => {
 const SidebarButton = ({ icon, text, path, isActive, isProtected, isAuthenticated, navigate }) => {
   const handleClick = () => {
     if (isProtected && !isAuthenticated) {
-      navigate("/login"); // ✅ Redirect to login if not authenticated
+      navigate("/login");
     } else {
       navigate(path);
     }

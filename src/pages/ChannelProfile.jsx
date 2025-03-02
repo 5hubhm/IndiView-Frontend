@@ -58,8 +58,8 @@ const ChannelProfile = () => {
           </h1>
           <p className="text-gray-400">@{channel.username || "N/A"}</p>
           <p className="text-gray-400">
-            {channel.subscribersCount || 0} Subscribers •{" "}
-            {channel.channelsSubscribedToCount || 0} Subscribed
+            {channel.subscribersCount} Subscribers •{" "}
+            {channel.channelsSubscribedToCount} Subscribed
           </p>
         </div>
       </div>

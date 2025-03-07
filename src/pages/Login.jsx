@@ -1,15 +1,14 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom"; // Import useNavigate for redirection
+import { useNavigate } from "react-router-dom";
 import api from "../utils/api";
 
 const Login = () => {
   const [formData, setFormData] = useState({
-    email: "",
-    username: "",
+    identifier: "", // Single field for both email & username
     password: "",
   });
-  const [error, setError] = useState(""); // State for error handling
-  const navigate = useNavigate(); // Hook for redirection
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -17,19 +16,21 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(""); // Reset error before new request
+    setError(""); // Reset error before request
 
     try {
-      const res = await api.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/login`,
-        formData,
-        { withCredentials: true } // Ensures cookies are sent and received properly
+      await api.post(
+        `/api/v1/users/login`,
+        {
+          identifier: formData.identifier, // Ensure we send "identifier"
+          password: formData.password,
+        },
+        { withCredentials: true }
       );
-      // Redirect to home page after successful login
-      navigate("/");
+      navigate("/"); // Redirect on successful login
     } catch (error) {
       console.error("Login Error:", error.response?.data?.message || error.message);
-      setError("Invalid credentials. Please try again.");
+      setError(error.response?.data?.message || "Invalid credentials. Please try again.");
     }
   };
 
@@ -42,9 +43,9 @@ const Login = () => {
 
         <input
           type="text"
-          name="username"
+          name="identifier"
           placeholder="Username or Email"
-          value={formData.username || formData.email}
+          value={formData.identifier}
           onChange={handleChange}
           required
           className="w-full p-2 bg-gray-800 rounded text-white"

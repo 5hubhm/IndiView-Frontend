@@ -6,6 +6,7 @@ import Signup from "./pages/Signup";
 import ChannelProfile from "./pages/ChannelProfile";
 import DashboardLayout from "./pages/DashboardLayout";
 import Support from "./pages/Support";
+import MyContent from "./pages/MyContent";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/c/:username" element={<ChannelProfile />} />
           <Route path="/Support" element={<Support />} />
+          <Route path="/mycontent" element={<MyContent />} />
         </Route>
       </Routes>
     </Router>

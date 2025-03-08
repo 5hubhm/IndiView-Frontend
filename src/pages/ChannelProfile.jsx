@@ -14,10 +14,8 @@ const ChannelProfile = () => {
         const response = await api.get(
           `${import.meta.env.VITE_API_BASE_URL}/api/v1/users/c/${username}`
         );
-        console.log("Fetched Channel Data:", response.data); // Debugging API response
         setChannel(response.data?.data || {}); // Ensure channel data is correctly set
       } catch (err) {
-        console.error("Error fetching channel profile:", err);
         setError(err.message || "Failed to load channel");
       } finally {
         setLoading(false);

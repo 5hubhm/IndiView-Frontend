@@ -7,6 +7,7 @@ import ChannelProfile from "./pages/ChannelProfile";
 import DashboardLayout from "./pages/DashboardLayout";
 import Support from "./pages/Support";
 import MyContent from "./pages/MyContent";
+import VideoPage from "./pages/VideoPage";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/c/:username" element={<ChannelProfile />} />
           <Route path="/Support" element={<Support />} />
           <Route path="/mycontent" element={<MyContent />} />
+          <Route path="/videos/:id" element={<VideoPage />} />
         </Route>
       </Routes>
     </Router>

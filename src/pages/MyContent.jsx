@@ -24,17 +24,6 @@ const MyContent = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (window.confirm("Are you sure you want to delete this video?")) {
-      try {
-        await api.delete(`/api/v1/videos/${id}`);
-        setVideos(videos.filter((video) => video._id !== id));
-      } catch (error) {
-        console.error("Error deleting video:", error);
-      }
-    }
-  };
-
   // Sorting logic
   const sortedVideos = [...videos].sort((a, b) => {
     if (sortBy === "views") return b.views - a.views;
@@ -102,16 +91,6 @@ const MyContent = () => {
                 <p className="text-gray-400 text-sm flex items-center gap-2">
                   <FiThumbsUp className="text-green-400" /> {video.likes || 0} Likes
                 </p>
-              </div>
-
-              {/* Video Management Actions */}
-              <div className="absolute top-3 right-3 flex gap-2">
-                <Link to={`/edit-video/${video._id}`} className="text-blue-400">
-                  <FiEdit size={20} />
-                </Link>
-                <button onClick={() => handleDelete(video._id)} className="text-red-400">
-                  <FiTrash size={20} />
-                </button>
               </div>
             </div>
           ))}

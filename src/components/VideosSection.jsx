@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../utils/api";
+import { Link } from "react-router-dom";
 
 const VideosSection = ({ username }) => {
     const [videos, setVideos] = useState([]);
@@ -7,6 +8,10 @@ const VideosSection = ({ username }) => {
     const [editData, setEditData] = useState({ title: "", description: "", thumbnail: "" });
     const [newThumbnail, setNewThumbnail] = useState(null);
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(null);
+    const [showUploadModal, setShowUploadModal] = useState(false);
+    const [uploadData, setUploadData] = useState({ title: "", description: "" });
+    const [uploadThumbnail, setUploadThumbnail] = useState(null);
+    const [uploadVideo, setUploadVideo] = useState(null);
 
     useEffect(() => {
         const fetchVideos = async () => {
@@ -43,17 +48,17 @@ const VideosSection = ({ username }) => {
             const formData = new FormData();
             formData.append("title", editData.title);
             formData.append("description", editData.description);
-    
+
             if (newThumbnail) {
                 formData.append("thumbnail", newThumbnail);
             }
-        
+
             const response = await api.patch(`/api/v1/videos/${videoId}`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data", // Ensure correct headers
                 },
             });
-    
+
             setVideos((prevVideos) =>
                 prevVideos.map((video) =>
                     video._id === videoId ? { ...video, ...response.data.data } : video
@@ -64,7 +69,44 @@ const VideosSection = ({ username }) => {
             console.error("Error updating video:", err);
         }
     };
-    
+
+    // Handle Upload
+    const handleUploadVideo = async () => {
+        if (!uploadData.title || !uploadData.description || !uploadThumbnail || !uploadVideo) {
+            alert("All fields are required!");
+            return;
+        }
+
+        try {
+            const formData = new FormData();
+            formData.append("title", uploadData.title);
+            formData.append("description", uploadData.description);
+            formData.append("thumbnail", uploadThumbnail);
+            formData.append("videoFile", uploadVideo);
+
+            const response = await api.post("/api/v1/videos", formData, {
+                headers: { "Content-Type": "multipart/form-data" },
+            });
+
+            setVideos([...videos, response.data.data]);
+            setShowUploadModal(false);
+        } catch (err) {
+            console.error("Error uploading video:", err);
+        }
+    };
+
+    // Handle delete confirmation
+    const confirmDelete = async (videoId) => {
+        try {
+            await api.delete(`/api/v1/videos/${videoId}`);
+            setVideos(videos.filter((video) => video._id !== videoId));
+            setShowDeleteConfirm(null);
+        } catch (err) {
+            console.error("Error deleting video:", err);
+        }
+    };
+
+
     return (
         <div className="p-6">
             {videos.length === 0 ? (
@@ -73,14 +115,14 @@ const VideosSection = ({ username }) => {
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     {videos.map((video) => (
                         <div key={video._id} className="bg-gray-800 p-4 rounded-lg shadow-md">
-                            <img
-                                src={video.thumbnail}
-                                alt={video.title}
-                                className="w-full h-40 object-cover rounded-lg"
-                            />
-                            <h3 className="mt-2 text-lg font-bold">{video.title}</h3>
-                            <p className="text-sm text-gray-400">{video.description}</p>
-
+                            <Link to={`/videos/${video._id}`} className="block">
+                                <img
+                                    src={video.thumbnail}
+                                    alt={video.title}
+                                    className="w-full h-40 object-cover rounded-lg"
+                                />
+                                <h1 className="text-xl font-bold mt-2">{video.title}</h1>
+                            </Link>
                             {/* Buttons */}
                             <div className="flex justify-between mt-3">
                                 <button
@@ -100,6 +142,7 @@ const VideosSection = ({ username }) => {
                     ))}
                 </div>
             )}
+
 
             {/* Edit Modal */}
             {editingVideo && (
@@ -203,10 +246,74 @@ const VideosSection = ({ username }) => {
                             >
                                 Confirm
                             </button>
+
                         </div>
                     </div>
                 </div>
             )}
+
+            {/* Upload Video Button */}
+            <button
+                onClick={() => setShowUploadModal(true)}
+                className="fixed bottom-6 right-6 bg-green-500 text-white px-4 py-2 rounded-full shadow-lg hover:bg-green-600"
+            >
+                Upload Video
+            </button>
+
+            {/* Upload Modal */}
+            {showUploadModal && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                    <div className="bg-gray-900 p-6 rounded-lg w-96 shadow-lg relative max-h-[90vh] overflow-y-auto">
+                        <button
+                            onClick={() => setShowUploadModal(false)}
+                            className="absolute top-3 right-3 text-gray-400 hover:text-white text-lg"
+                        >
+                            ✖
+                        </button>
+                        <h2 className="text-xl font-bold text-white">Upload Video</h2>
+                        <input
+                            type="text"
+                            placeholder="Title"
+                            value={uploadData.title}
+                            onChange={(e) => setUploadData({ ...uploadData, title: e.target.value })}
+                            className="w-full p-2 bg-gray-800 text-white rounded border border-gray-700 mt-2"
+                        />
+                        <textarea
+                            placeholder="Description"
+                            value={uploadData.description}
+                            onChange={(e) => setUploadData({ ...uploadData, description: e.target.value })}
+                            className="w-full p-2 h-28 bg-gray-800 text-white rounded border border-gray-700 resize-none mt-2"
+                        />
+                        <input
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => setUploadThumbnail(e.target.files[0])}
+                            className="w-full text-sm text-gray-400 mt-2"
+                        />
+                        <input
+                            type="file"
+                            accept="video/*"
+                            onChange={(e) => setUploadVideo(e.target.files[0])}
+                            className="w-full text-sm text-gray-400 mt-2"
+                        />
+                        <div className="flex justify-between mt-4">
+                            <button
+                                onClick={() => setShowUploadModal(false)}
+                                className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                onClick={handleUploadVideo}
+                                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                            >
+                                Upload
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 };

@@ -4,7 +4,6 @@ import api from "../utils/api";
 import VideosSection from "../components/VideosSection";
 import PlaylistSection from "../components/PlaylistSection";
 import TweetsSection from "../components/TweetsSection";
-import SubscribedSection from "../components/SubscribedSection";
 
 const ChannelProfile = () => {
   const { username } = useParams();
@@ -51,11 +50,6 @@ const ChannelProfile = () => {
             onError={(e) => (e.target.src = "/default-avatar.jpg")}
           />
         </div>
-        {channel.isOwner && (
-          <button className="absolute top-4 right-6 bg-purple-600 hover:bg-purple-700 text-white px-5 py-2 rounded-lg transition-transform transform hover:scale-105 shadow-md">
-            ✏ Edit
-          </button>
-        )}
       </div>
 
       {/* Channel Info */}
@@ -71,14 +65,13 @@ const ChannelProfile = () => {
 
       {/* Tabs */}
       <div className="flex border-b border-gray-700 mt-6 px-6">
-        {["videos", "playlist", "tweets", "subscribed"].map((tab) => (
+        {["videos", "playlist", "tweets"].map((tab) => (
           <button
             key={tab}
-            className={`px-5 py-3 text-lg font-semibold transition-colors ${
-              activeTab === tab
+            className={`px-5 py-3 text-lg font-semibold transition-colors ${activeTab === tab
                 ? "text-purple-400 border-b-2 border-purple-400"
                 : "text-gray-400 hover:text-white"
-            }`}
+              }`}
             onClick={() => setActiveTab(tab)}
           >
             {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -88,10 +81,9 @@ const ChannelProfile = () => {
 
       {/* Dynamic Content */}
       <div className="px-6 py-4">
-        {activeTab === "videos" && <VideosSection username={username} />}
-        {activeTab === "playlist" && <PlaylistSection username={username} />}
-        {activeTab === "tweets" && <TweetsSection username={username}/>}
-        {activeTab === "subscribed" && <SubscribedSection username={username}/>}
+        {activeTab === "videos" && <VideosSection username={channel.username} />}
+        {activeTab === "playlist" && <PlaylistSection username={channel.username} />}
+        {activeTab === "tweets" && <TweetsSection username={channel.username} />}
       </div>
     </div>
   );

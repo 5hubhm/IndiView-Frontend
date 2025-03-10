@@ -37,7 +37,7 @@ const VideoPage = () => {
                                     {video.description}
                                 </p>
                                 <button
-                                    className="text-blue-400 flex items-center mt-2"
+                                    className="text-blue-400 flex items-center mt-2 cursor-pointer"
                                     onClick={() => setShowFullDescription(!showFullDescription)}
                                 >
                                     {showFullDescription ? "Show Less" : "Show More"} {showFullDescription ? <FiChevronUp /> : <FiChevronDown />}
@@ -84,30 +84,48 @@ const formatViews = (num) => {
     return num;
 };
 
-const UserDetails = ({ user }) => (
-    <div className="flex items-center mt-4">
-        <img src={user?.avatar || "/default-avatar.png"} alt="Uploader"
-            className="w-12 h-12 rounded-full object-cover border border-gray-700" />
-        <div className="ml-3">
-            <p className="font-semibold text-lg">{user?.fullName || "Unknown"}</p>
-            <p className="text-gray-500 text-sm">@{user?.username || "username"}</p>
+const UserDetails = ({ user }) => {
+    const [isSubscribed, setIsSubscribed] = useState(false);
+
+    const handleSubscribe = async () => {
+        if (!user || !user._id) return;
+
+        try {
+            await api.post(`/api/v1/subscriptions/c/${user._id}`);
+            setIsSubscribed(true);
+        } catch (error) {
+            console.error("Subscription failed:", error);
+        }
+    };
+
+    return (
+        <div className="flex items-center mt-4">
+            <img src={user?.avatar || "/default-avatar.png"} alt="Uploader"
+                className="w-12 h-12 rounded-full object-cover border border-gray-700" />
+            <div className="ml-3">
+                <p className="font-semibold text-lg">{user?.fullName || "Unknown"}</p>
+                <p className="text-gray-500 text-sm">@{user?.username || "username"}</p>
+            </div>
+            <button
+                onClick={handleSubscribe}
+                disabled={isSubscribed}
+                className={`ml-auto px-4 py-2 rounded-lg transition cursor-pointer ${
+                    isSubscribed ? "bg-gray-500" : "bg-purple-600 hover:bg-purple-700 text-white"
+                }`}
+            >
+                {isSubscribed ? "Subscribed" : "Subscribe"}
+            </button>
         </div>
-        <button className="ml-auto bg-purple-600 hover:bg-purple-700 text-white px-4 py-2 rounded-lg transition">
-            Subscribe
-        </button>
-    </div>
-);
+    );
+};
 
 const VideoActions = ({ video }) => (
     <div className="mt-4 flex gap-4">
         <button className="flex items-center gap-2 bg-gray-800 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
-            <FiThumbsUp className="text-green-400" /> {video.likes || 0}
+            <FiThumbsUp className="text-green-400 cursor-pointer" /> {video.likes || 0}
         </button>
         <button className="flex items-center gap-2 bg-gray-800 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
-            <FiThumbsDown className="text-red-400" /> {video.dislikes || 0}
-        </button>
-        <button className="flex items-center gap-2 bg-gray-800 px-4 py-2 rounded-lg hover:bg-gray-700 transition">
-            <FiSave /> Save
+            <FiThumbsDown className="text-red-400 cursor-pointer" /> {video.dislikes || 0}
         </button>
     </div>
 );

@@ -42,7 +42,7 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="w-1/5 h-screen bg-black text-white p-4 border-r border-gray-700">
+    <aside className="w-1/5 min-h-screen bg-black text-white p-4 border-r border-gray-700">
       <nav className="space-y-2">
         {menuItems.map((item) => (
           <SidebarButton

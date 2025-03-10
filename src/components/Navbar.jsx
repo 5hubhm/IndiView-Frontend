@@ -102,7 +102,7 @@ const Navbar = () => {
                                     className="block w-full text-left px-4 py-2 hover:bg-gray-800 transition"
                                     onClick={() => setMenuOpen(false)}
                                 >
-                                    Profile
+                                    Channel Profile
                                 </Link>
 
                                 <button

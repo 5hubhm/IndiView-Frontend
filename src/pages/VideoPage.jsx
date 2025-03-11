@@ -100,7 +100,7 @@ const UserDetails = ({ user }) => {
 
     return (
         <div className="flex items-center mt-4">
-            <img src={user?.avatar || "/default-avatar.png"} alt="Uploader"
+            <img src={user?.avatar} alt="Uploader"
                 className="w-12 h-12 rounded-full object-cover border border-gray-700" />
             <div className="ml-3">
                 <p className="font-semibold text-lg">{user?.fullName || "Unknown"}</p>

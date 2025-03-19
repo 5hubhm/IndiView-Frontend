@@ -262,50 +262,79 @@ const VideosSection = ({ username }) => {
 
             {/* Upload Modal */}
             {showUploadModal && (
-                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-                    <div className="bg-gray-900 p-6 rounded-lg w-96 shadow-lg relative max-h-[90vh] overflow-y-auto">
+                <div className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center">
+                    <div className="bg-gray-900 p-6 rounded-lg w-96 shadow-2xl relative max-h-[90vh] overflow-y-auto border border-gray-700">
+                        {/* Close Button */}
                         <button
                             onClick={() => setShowUploadModal(false)}
                             className="absolute top-3 right-3 text-gray-400 hover:text-white text-lg"
                         >
                             ✖
                         </button>
-                        <h2 className="text-xl font-bold text-white">Upload Video</h2>
+
+                        {/* Title */}
+                        <h2 className="text-2xl font-semibold text-white mb-4">Upload Video</h2>
+
+                        {/* Title Input */}
                         <input
                             type="text"
-                            placeholder="Title"
+                            placeholder="Enter video title..."
                             value={uploadData.title}
                             onChange={(e) => setUploadData({ ...uploadData, title: e.target.value })}
-                            className="w-full p-2 bg-gray-800 text-white rounded border border-gray-700 mt-2"
+                            className="w-full p-2 bg-gray-800 text-white rounded-md border border-gray-700 mt-2 focus:ring-2 focus:ring-green-500 outline-none"
                         />
+
+                        {/* Description Input */}
                         <textarea
-                            placeholder="Description"
+                            placeholder="Enter video description..."
                             value={uploadData.description}
                             onChange={(e) => setUploadData({ ...uploadData, description: e.target.value })}
-                            className="w-full p-2 h-28 bg-gray-800 text-white rounded border border-gray-700 resize-none mt-2"
+                            className="w-full p-2 h-24 bg-gray-800 text-white rounded-md border border-gray-700 resize-none mt-2 focus:ring-2 focus:ring-green-500 outline-none"
                         />
+
+                        {/* Thumbnail Upload */}
+                        <label className="block mt-3 text-gray-400 font-medium">
+                            Upload Thumbnail:
+                        </label>
                         <input
                             type="file"
                             accept="image/*"
-                            onChange={(e) => setUploadThumbnail(e.target.files[0])}
-                            className="w-full text-sm text-gray-400 mt-2"
+                            onChange={(e) => e.target.files.length > 0 && setUploadThumbnail(e.target.files[0])}
+                            className="w-full text-sm text-gray-300 bg-gray-800 p-2 rounded-md border border-gray-700 cursor-pointer hover:bg-gray-700 transition mt-1"
                         />
+                        {uploadThumbnail && (
+                            <p className="text-green-400 text-sm mt-1">✔ {uploadThumbnail.name}</p>
+                        )}
+
+                        {/* Video Upload */}
+                        <label className="block mt-3 text-gray-400 font-medium">
+                            Upload Video:
+                        </label>
                         <input
                             type="file"
                             accept="video/*"
-                            onChange={(e) => setUploadVideo(e.target.files[0])}
-                            className="w-full text-sm text-gray-400 mt-2"
+                            onChange={(e) => e.target.files.length > 0 && setUploadVideo(e.target.files[0])}
+                            className="w-full text-sm text-gray-300 bg-gray-800 p-2 rounded-md border border-gray-700 cursor-pointer hover:bg-gray-700 transition mt-1"
                         />
-                        <div className="flex justify-between mt-4">
+                        {uploadVideo && (
+                            <p className="text-green-400 text-sm mt-1">✔ {uploadVideo.name}</p>
+                        )}
+
+                        {/* Buttons */}
+                        <div className="flex justify-between mt-5">
                             <button
                                 onClick={() => setShowUploadModal(false)}
-                                className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+                                className="bg-gray-700 text-white px-4 py-2 rounded-md hover:bg-gray-600 transition"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={handleUploadVideo}
-                                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                                disabled={!uploadData.title || !uploadData.description || !uploadVideo}
+                                className={`px-4 py-2 rounded-md transition ${uploadData.title && uploadData.description && uploadVideo
+                                        ? 'bg-green-500 hover:bg-green-600 text-white'
+                                        : 'bg-gray-500 cursor-not-allowed text-gray-300'
+                                    }`}
                             >
                                 Upload
                             </button>
@@ -313,6 +342,7 @@ const VideosSection = ({ username }) => {
                     </div>
                 </div>
             )}
+
 
         </div>
     );

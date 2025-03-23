@@ -6,7 +6,8 @@ import api from "../utils/api";
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [isAuthenticated, setIsAuthenticated] = useState(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -17,22 +18,26 @@ const Sidebar = () => {
 
         if (response.data) {
           setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
         }
       } catch (error) {
         setIsAuthenticated(false);
+      } finally {
+        setLoading(false);
       }
     };
 
     checkAuth();
-  }, []);
+  }, [location.pathname]); // Recheck authentication when navigating
 
-  if (isAuthenticated === null) {
+  if (loading) {
     return <div className="text-white p-4">Loading...</div>;
   }
 
   const menuItems = [
     { icon: <FiHome />, text: "Home", path: "/" },
-    { icon: <FiThumbsUp />, text: "Liked Videos", path: "/likedvideos", protected: true },
+    { icon: <FiThumbsUp />, text: "Liked Videos", path: "/liked", protected: true },
     { icon: <FiClock />, text: "History", path: "/history", protected: true },
     { icon: <FiFolder />, text: "My Content", path: "/mycontent", protected: true },
     { icon: <FiFolder />, text: "Collections", path: "/collections", protected: true },
@@ -50,7 +55,7 @@ const Sidebar = () => {
             icon={item.icon}
             text={item.text}
             path={item.path}
-            isActive={location.pathname === item.path}
+            isActive={location.pathname.startsWith(item.path) && item.path !== "/"}
             isProtected={item.protected || false}
             isAuthenticated={isAuthenticated}
             navigate={navigate}

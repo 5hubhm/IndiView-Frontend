@@ -143,59 +143,53 @@ const VideosSection = ({ username }) => {
 
             {/* Edit Modal */}
             {editingVideo && (
-                <div className="absolute inset-0 z-50 flex items-center justify-center">
-                    <div className="absolute inset-0 bg-blue-900/40 backdrop-blur-sm rounded-xl"></div>
-                    <div className="relative bg-gray-900 p-6 rounded-lg w-96 shadow-xl z-10">
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+                    <div className="relative z-10 w-full max-w-md bg-gray-950 text-white rounded-2xl shadow-2xl p-6">
                         <button
                             onClick={() => setEditingVideo(null)}
                             className="absolute top-3 right-3 text-gray-400 hover:text-white text-lg"
                         >
                             ✖
                         </button>
-                        <h2 className="text-xl font-bold text-white mb-3">Edit Video</h2>
+                        <h2 className="text-xl font-bold mb-4">Edit Video</h2>
 
-                        <label className="block text-gray-300 mb-2">Thumbnail</label>
-                        <div className="mb-3 border border-gray-600 rounded-lg overflow-hidden">
+                        <label className="block text-sm mb-1">Thumbnail</label>
+                        <div className="mb-3">
                             {editData.thumbnail ? (
-                                <img src={editData.thumbnail} alt="Thumbnail" className="w-full h-40 object-cover" />
+                                <img src={editData.thumbnail} className="w-full h-40 object-cover rounded" />
                             ) : (
-                                <div className="w-full h-40 bg-gray-800 flex items-center justify-center text-gray-400">
-                                    No thumbnail uploaded
+                                <div className="w-full h-40 bg-gray-800 flex items-center justify-center rounded text-gray-400">
+                                    No Thumbnail
                                 </div>
                             )}
-                            <input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleThumbnailChange}
-                                className="mt-2 text-sm text-gray-400"
-                            />
+                            <input type="file" accept="image/*" onChange={handleThumbnailChange} className="mt-2 text-sm" />
                         </div>
 
-                        <label className="block text-gray-300 mb-1">Title</label>
+                        <label className="block text-sm mb-1">Title</label>
                         <input
-                            type="text"
                             value={editData.title}
                             onChange={(e) => setEditData({ ...editData, title: e.target.value })}
-                            className="w-full p-2 bg-gray-800 text-white rounded border border-gray-700 mb-3"
+                            className="w-full px-3 py-2 rounded bg-gray-800 text-white border border-gray-700 mb-3"
                         />
 
-                        <label className="block text-gray-300 mb-1">Description</label>
+                        <label className="block text-sm mb-1">Description</label>
                         <textarea
                             value={editData.description}
                             onChange={(e) => setEditData({ ...editData, description: e.target.value })}
-                            className="w-full p-2 h-24 bg-gray-800 text-white rounded border border-gray-700 resize-none mb-4"
+                            className="w-full px-3 py-2 h-24 rounded bg-gray-800 text-white border border-gray-700 resize-none mb-4"
                         />
 
-                        <div className="flex justify-between">
+                        <div className="flex justify-end space-x-2">
                             <button
                                 onClick={() => setEditingVideo(null)}
-                                className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+                                className="px-4 py-2 rounded bg-gray-600 hover:bg-gray-700"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={() => handleSaveEdit(editingVideo)}
-                                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                                className="px-4 py-2 rounded bg-green-500 hover:bg-green-600"
                             >
                                 Save
                             </button>
@@ -204,11 +198,12 @@ const VideosSection = ({ username }) => {
                 </div>
             )}
 
+
             {/* Delete Confirmation Modal */}
             {showDeleteConfirm && (
-                <div className="absolute inset-0 z-50 flex items-center justify-center">
-                    <div className="absolute inset-0 bg-blue-900/40 backdrop-blur-sm rounded-xl"></div>
-                    <div className="relative bg-gray-900 p-6 rounded-lg w-80 shadow-xl z-10 text-center">
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+                    <div className="relative z-10 w-full max-w-md bg-gray-950 text-white rounded-2xl shadow-2xl p-6">
                         <button
                             onClick={() => setShowDeleteConfirm(null)}
                             className="absolute top-3 right-3 text-gray-400 hover:text-white text-lg"
@@ -217,16 +212,16 @@ const VideosSection = ({ username }) => {
                         </button>
                         <h2 className="text-xl font-bold mb-4">Delete Video?</h2>
                         <p className="text-gray-300 mb-4">Are you sure you want to delete this video?</p>
-                        <div className="flex justify-between">
+                        <div className="flex justify-end space-x-3">
                             <button
                                 onClick={() => setShowDeleteConfirm(null)}
-                                className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+                                className="px-4 py-2 rounded bg-gray-600 hover:bg-gray-700"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={() => confirmDelete(showDeleteConfirm)}
-                                className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                                className="px-4 py-2 rounded bg-red-500 hover:bg-red-600"
                             >
                                 Confirm
                             </button>
@@ -235,67 +230,80 @@ const VideosSection = ({ username }) => {
                 </div>
             )}
 
+
             {/* Upload Modal */}
             {showUploadModal && (
-                <div className="absolute inset-0 z-50 flex items-center justify-center">
-                    <div className="absolute inset-0 bg-blue-900/40 backdrop-blur-sm rounded-xl"></div>
-                    <div className="relative bg-gray-900 p-6 rounded-lg w-96 shadow-xl z-10">
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+                    <div className="relative z-10 w-full max-w-md bg-gray-950 text-white rounded-2xl shadow-2xl p-6">
+
+                        {/* Close Button */}
                         <button
                             onClick={() => setShowUploadModal(false)}
-                            className="absolute top-3 right-3 text-gray-400 hover:text-white text-lg"
+                            className="absolute top-4 right-4 text-gray-400 hover:text-white text-xl"
                         >
-                            ✖
+                            &times;
                         </button>
 
-                        <h2 className="text-2xl font-semibold text-white mb-4">Upload Video</h2>
+                        {/* Header */}
+                        <h2 className="text-2xl font-bold mb-6 border-b border-gray-700 pb-2">Upload New Video</h2>
 
-                        <input
-                            type="text"
-                            placeholder="Title"
-                            value={uploadData.title}
-                            onChange={(e) => setUploadData({ ...uploadData, title: e.target.value })}
-                            className="w-full p-2 bg-gray-800 text-white rounded border border-gray-700 mb-3"
-                        />
-                        <textarea
-                            placeholder="Description"
-                            value={uploadData.description}
-                            onChange={(e) => setUploadData({ ...uploadData, description: e.target.value })}
-                            className="w-full p-2 h-24 bg-gray-800 text-white rounded border border-gray-700 resize-none mb-3"
-                        />
-                        <input
-                            type="file"
-                            accept="image/*"
-                            onChange={(e) => setUploadThumbnail(e.target.files[0])}
-                            className="text-sm text-gray-300 bg-gray-800 p-2 rounded border border-gray-700 mb-2 w-full"
-                        />
-                        <input
-                            type="file"
-                            accept="video/*"
-                            onChange={(e) => setUploadVideo(e.target.files[0])}
-                            className="text-sm text-gray-300 bg-gray-800 p-2 rounded border border-gray-700 mb-4 w-full"
-                        />
+                        {/* Title Input */}
+                        <div className="mb-4">
+                            <label className="block text-sm text-gray-400 mb-1">Title</label>
+                            <input
+                                type="text"
+                                placeholder="Enter video title"
+                                value={uploadData.title}
+                                onChange={(e) => setUploadData({ ...uploadData, title: e.target.value })}
+                                className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
 
-                        {/* Upload Progress Bar */}
-                        {uploadProgress > 0 && (
-                            <div className="w-full bg-gray-700 rounded-full h-4 mb-4">
-                                <div
-                                    className="bg-green-500 h-4 rounded-full"
-                                    style={{ width: `${uploadProgress}%` }}
-                                ></div>
-                                <p className="text-sm text-gray-300 mt-1 text-center">{uploadProgress}%</p>
-                            </div>
-                        )}
+                        {/* Description Textarea */}
+                        <div className="mb-4">
+                            <label className="block text-sm text-gray-400 mb-1">Description</label>
+                            <textarea
+                                placeholder="Write a brief description..."
+                                value={uploadData.description}
+                                onChange={(e) => setUploadData({ ...uploadData, description: e.target.value })}
+                                className="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-lg resize-none h-24 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                        </div>
 
-                        <div className="flex justify-between">
+                        {/* Thumbnail Upload */}
+                        <div className="mb-4">
+                            <label className="block text-sm text-gray-400 mb-1">Thumbnail</label>
+                            <input
+                                type="file"
+                                accept="image/*"
+                                onChange={(e) => setUploadThumbnail(e.target.files[0])}
+                                className="w-full text-sm text-gray-300 file:mr-3 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700"
+                            />
+                        </div>
+
+                        {/* Video Upload */}
+                        <div className="mb-6">
+                            <label className="block text-sm text-gray-400 mb-1">Video File</label>
+                            <input
+                                type="file"
+                                accept="video/*"
+                                onChange={(e) => setUploadVideo(e.target.files[0])}
+                                className="w-full text-sm text-gray-300 file:mr-3 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-green-600 file:text-white hover:file:bg-green-700"
+                            />
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="flex justify-end space-x-3">
                             <button
                                 onClick={() => setShowUploadModal(false)}
-                                className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700"
+                                className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={handleUploadVideo}
-                                className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                                className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg"
                             >
                                 Upload
                             </button>

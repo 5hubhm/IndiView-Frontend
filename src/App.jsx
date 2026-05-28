@@ -8,6 +8,14 @@ import DashboardLayout from "./pages/DashboardLayout";
 import Support from "./pages/Support";
 import MyContent from "./pages/MyContent";
 import VideoPage from "./pages/VideoPage";
+import posthog from 'posthog-js'
+
+posthog.init(import.meta.env.POSTHOG_API_KEY, {
+    api_host: 'https://us.i.posthog.com',
+    person_profiles: 'identified_only', // Best practice for privacy
+    capture_pageview: true,             // Tracks navigation automatically
+})
+
 
 function App() {
   return (
